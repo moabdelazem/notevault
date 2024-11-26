@@ -1,15 +1,15 @@
 import { Hono } from "hono";
+import {
+  createNote,
+  deleteNote,
+  getNote,
+  listNotes,
+  updateNote,
+} from "../controllers/notes.js";
 
 export const notesRouter = new Hono()
-  .get("/", (c) => {
-    return c.text("This is Get Request");
-  })
-  .post("/", (c) => {
-    return c.text("This is Post Request");
-  })
-  .put("/", (c) => {
-    return c.text("This is Put Request");
-  })
-  .delete("/", (c) => {
-    return c.text("This is Delete Request");
-  });
+  .get("/", listNotes)
+  .get("/:id", getNote)
+  .post("/", createNote)
+  .put("/:id", updateNote)
+  .delete("/:id", deleteNote);

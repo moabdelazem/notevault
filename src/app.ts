@@ -4,9 +4,11 @@ import { prettyJSON } from "hono/pretty-json";
 import { requestId } from "hono/request-id";
 import { csrf } from "hono/csrf";
 import { cors } from "hono/cors";
+import { HTTPException } from "hono/http-exception";
+import { notesRouter } from "./routes/notes.js";
 
 // Create a new Hono instance
-export const app = new Hono();
+export const app = new Hono().basePath("/api");
 
 // Use some hono middleware
 app.use(logger());
@@ -24,6 +26,14 @@ app.use(
   })
 );
 
-// Setup the API routes
-const apiRouter = new Hono();
-app.route("/api", apiRouter);
+app.route("/notes", notesRouter);
+
+app.onError((error, c) => {
+  if (error instanceof HTTPException) {
+    return error.getResponse();
+  }
+
+  return new HTTPException(500, {
+    message: "Internal Server Error",
+  }).getResponse();
+});
