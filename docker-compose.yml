@@ -2,8 +2,8 @@ services:
   db:
     image: postgres:latest
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: notevault
+      POSTGRES_PASSWORD: secret_note
       POSTGRES_DB: ${DB_NAME}
     ports:
       - "5432:5432"
